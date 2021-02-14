@@ -5,7 +5,8 @@ Project emulates piggy for multiple users. COncurency and thread safety not impl
 ## Architecture
 - **main** - contains logic of piggy
 - **users** - users data with account balance
-- other `.txt` files contains histories of bank useres
+- `*.piggies` - files contains piggies associated with user
+- `*.piggy` - transaction history of piggy
 
 ## Compile & Run
 ```bash

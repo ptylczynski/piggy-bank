@@ -116,20 +116,6 @@ bool authorize(std::string username, std::string password){
     return false;
 }
 
-void chooseAndLoadPiggy(){
-    int response;
-    do{
-        std::cout << "Load Piggy" << std::endl;
-        for(int i = 0; i < usersSize; i++){
-            std::cout << i << ". " << userPiggies[i] << std::endl;
-        }
-        std::cin >> response;
-        std::cout << std::endl;
-    }while(response > piggiesSize or response < 0);
-    
-    loadHistory(userPiggies[response]);
-}
-
 void addPiggy(){
     std::cout << "Add Piggy" << std::endl;
     std::string piggyName;
@@ -252,6 +238,22 @@ void piggyMenu(std::string username){
     
 }
 
+void chooseAndLoadPiggy(std::string username){
+    int response;
+    do{
+        std::cout << "Load Piggy" << std::endl;
+        for(int i = 0; i < usersSize; i++){
+            std::cout << i << ". " << userPiggies[i] << std::endl;
+        }
+        std::cin >> response;
+        std::cout << std::endl;
+    }while(response > piggiesSize or response < 0);
+    
+    loadHistory(userPiggies[response]);
+    piggyMenu(username);
+    saveHistory(userPiggies[response]);
+}
+
 int main(){
 
     loadUsers();
@@ -259,7 +261,9 @@ int main(){
     std::string login;
     std::string password;
     
-    while(true){
+    bool run = true;
+    
+    while(run){
         do{ 
             std::cout << "Login: ";
             std::cin >> login;
@@ -277,6 +281,7 @@ int main(){
         std::cout << "1.Load piggy" << std::endl;
         std::cout << "2.Add piggy" << std::endl;
         std::cout << "3.Remove piggy" << std::endl;
+        std::cout << "4. Quit" << std::endl;
         
         int response;
         bool selected = false;
@@ -287,8 +292,7 @@ int main(){
             switch(response){
                 case 1:{
                     selected = true;
-                    chooseAndLoadPiggy();
-                    piggyMenu(login);
+                    chooseAndLoadPiggy(login);
                     break;
                 }
                 case 2:{
@@ -301,11 +305,18 @@ int main(){
                     removePiggy();
                     break;
                 }
+                case 4:{
+                    run = false;
+                    break;
+                }
                 default: std::cout << "Wrong number must be in range <1,3>";
             }
         }
         
     }
-       
+    
+    savePiggies(login);
+    saveUsers();
+     
     return 0;
 }
